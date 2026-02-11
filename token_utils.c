@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/11 18:41:15 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/02/11 18:57:24 by vgotzlov         ###   ########.fr       */
+/*   Created: 2026/02/11 18:38:14 by vgotzlov          #+#    #+#             */
+/*   Updated: 2026/02/11 18:39:51 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// zatim jen testovaci
-int	main()
-{
-	char *line = readline("minishell$ ");
-	t_token *tokens = lexer(line);
-	
-	t_token *tmp = tokens;
-	while (tmp) 
-	{
-		printf("Type: %d, Lexeme: |%s|\n", tmp->type, tmp->lexeme);
-		tmp = tmp->next;
-	}
-}
+t_token	*new_token(type, lexeme);
+
+void	token_add_back(head, new);
+
+void	free_tokens(head);
