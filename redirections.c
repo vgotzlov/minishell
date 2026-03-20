@@ -46,10 +46,30 @@ char	*word_to_pure_string(t_word *w)
 	return (res);
 }
 
+static int	apply_single_redir(t_redir *r, int target)
+{
+	int	fd;
+
+	if (r->type == R_HEREDOC)
+		fd = r->heredoc_fd;
+	else
+		fd = open_redir(r);
+	if (fd == -1)
+		return (perror("open"), 1);
+	if (dup2(fd, target) == -1)
+	{
+		if (fd > 2)
+			close(fd);
+		return (perror("dup2"), 1);
+	}
+	if (fd > 2)
+		close(fd);
+	return (0);
+}
+
 int	apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out)
 {
 	t_redir	*r;
-	int		fd;
 	int		target;
 
 	r = cmd->redirs;
@@ -58,19 +78,10 @@ int	apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out)
 		target = get_target(r->type);
 		if (save_original_fd(target, saved_in, saved_out) != 0)
 			return (1);
-		fd = open_redir(&cmd->redirs);
-		if (fd == -1)
-		{
-			if (r->type == R_HEREDOC)
-				return (perror("heredoc"), 1);
-			else
-				return (perror("open"), 1);
-		}
-		if (dup2(fd, target) == -1)
-			return (close(fd), perror("dup2"), 1);
+		if (apply_single_redir(r, target) != 0)
+			return (1);
 		r = r->next;
 	}
-	close(fd);
 	return (0);
 }
 

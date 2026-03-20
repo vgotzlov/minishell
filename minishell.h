@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/20 11:33:39 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 11:45:34 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,20 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <signal.h>
+# include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
+# include <limits.h>
 # include <readline/readline.h>
-# include "libft.h"
+# include <readline/history.h>
+# include "libft/libft.h"
+
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
 
 // Tokens
 typedef enum e_tok_type
@@ -141,19 +149,31 @@ typedef struct s_shell
 extern volatile sig_atomic_t	g_sig;
 
 // Builtins
-int			append_str(char **out, const char *s);
-int			append_lit(t_segment *seg, char **out);
-int			append_var(t_shell *sh, t_segment *seg, char **out);
-int			append_status(t_shell *sh, char **out);
-char		word_to_string(t_shell *sh, t_word *w);
-char		build_arg_from_words(t_shell *sh, const t_cmd *cmd);
+char		*word_to_string(t_shell *sh, t_word *w);
+char		**build_arg_from_words(t_shell *sh, const t_cmd *cmd);
 int			exec_builtin(t_shell *sh, t_cmd *cmd);
+int			builtin_cd(t_shell *sh, char **argv);
+int			builtin_exit(t_shell *sh, char **argv);
+void		handle_export_error(char *id, int *last_status);
+t_env		*new_env_node(char *key, char *value);
+void		update_or_add_env(t_shell *sh, char *key, char *value);
+int			builtin_export(t_shell *sh, char **argv);
+int			builtin_unset(t_shell *sh, char **argv);
+int			builtin_echo(char **argv);
+int			builtin_pwd(char **argv);
+int			builtin_env(t_shell *sh, char **argv);
+int			is_stateful_builtin(const t_cmd *cmd);
+int			is_valid_identifier(const char *s);
 
 // Child
-void		exec_command_child(t_shell *sh, t_cmd *cmd);
+void		exec_and_free(t_shell *sh, t_pipeline *p, char *path, char **argv);
+char		*get_child_path(t_shell *sh, t_pipeline *p, char **argv);
+void		exec_command_child(t_shell *sh, t_pipeline *p, int cmd_idx);
 
 // Environment
-const char	env_get(const t_env *env, const char *key);
+t_env		*init_env_list(char **envp);
+const char	*env_get(const t_env *env, const char *key);
+char		**env_to_array(t_env *env);
 
 // Pipeline
 int			exec_multi_pipeline(t_shell *sh, t_pipeline *p);
@@ -173,6 +193,20 @@ int			get_target(int type);
 char		*word_to_pure_string(t_word *w);
 int			apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out);
 void		restore_redirs(int saved_in, int saved_out);
+
+// Signals
+void		setup_parent_signals(void);
+void		handle_sigint(int sig);
+int			event_hook(void);
+void		setup_interactive_signals(void);
+int			child_setup_signals(void);
+
+// Clean up
+void		free_env_list(t_env *env);
+void		free_shell(t_shell *sh);
+void		free_argv(char **argv);
+void		free_array(char **arr);
+void		free_pipeline(t_pipeline *p);
 
 // Global variable
 extern volatile sig_atomic_t	g_sig;

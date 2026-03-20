@@ -6,13 +6,13 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 16:41:55 by msnizek           #+#    #+#             */
-/*   Updated: 2026/02/19 17:09:52 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/17 11:57:04 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	append_str(char **out, const char *s)
+static int	append_str(char **out, const char *s)
 {
 	char	*tmp;
 
@@ -26,16 +26,16 @@ int	append_str(char **out, const char *s)
 	return (0);
 }
 
-int	append_lit(t_segment *seg, char **out)
+static int	append_lit(t_segment *seg, char **out)
 {
 	if (!seg || !out)
 		return (1);
-	if (append_str(&out, seg->text) != 0)
+	if (append_str(out, seg->text) != 0)
 		return (1);
 	return (0);
 }
 
-int	append_var(t_shell *sh, t_segment *seg, char **out)
+static int	append_var(t_shell *sh, t_segment *seg, char **out)
 {
 	const char	*val;
 
@@ -47,7 +47,7 @@ int	append_var(t_shell *sh, t_segment *seg, char **out)
 	return (0);
 }
 
-int	append_status(t_shell *sh, char **out)
+static int	append_status(t_shell *sh, char **out)
 {
 	char	*tmp;
 
@@ -62,7 +62,7 @@ int	append_status(t_shell *sh, char **out)
 	return (0);
 }
 
-char	word_to_string(t_shell *sh, t_word *w)
+char	*word_to_string(t_shell *sh, t_word *w)
 {
 	t_segment	*seg;
 	char		*out;

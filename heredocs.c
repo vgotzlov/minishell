@@ -12,21 +12,50 @@
 
 #include "minishell.h"
 
-static int	hd_read_loop(t_redir *r, int fd)
+static void	handle_sigint_heredoc(int sig)
+{
+	(void)sig;
+	g_sig = SIGINT;
+	write(1, "\n", 1);
+	close(STDIN_FILENO);
+}
+
+static int	process_heredoc_line(t_redir *r, int fd)
 {
 	char	*line;
 
-	while (1)
+	line = readline("$> ");
+	if (g_sig == SIGINT)
+		return (1);
+	if (!line)
+		return (-1);
+	if (ft_strncmp(line, r->delim_raw, ft_strlen(r->delim_raw) + 1) == 0)
 	{
-		line = readline("$> ");
-		if (!line)
-			break ;
-		if (ft_strcmp(line, r->delim_raw) == 0)
-			return (free(line), 0);
-		if (write(fd, line, ft_strlen(line) == -1 || write(fd, "\n", 1) == -1))
-			return (free(line), 1);
 		free(line);
+		return (-1);
 	}
+	ft_putendl_fd(line, fd);
+	free(line);
+	return (0);
+}
+
+static int	hd_read_loop(t_redir *r, int fd)
+{
+	int	stdin_copy;
+	int	status;
+
+	stdin_copy = dup(STDIN_FILENO);
+	if (stdin_copy == -1)
+		return (1);
+	signal(SIGINT, handle_sigint_heredoc);
+	status = 0;
+	while (status == 0)
+		status = process_heredoc_line(r, fd);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	signal(SIGINT, handle_sigint);
+	if (status == 1)
+		return (1);
 	return (0);
 }
 

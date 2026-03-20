@@ -6,28 +6,13 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 15:13:33 by msnizek           #+#    #+#             */
-/*   Updated: 2026/02/19 17:05:29 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/17 12:04:45 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_argv(char **argv)
-{
-	int	i;
-
-	if (!argv)
-		return ;
-	i = 0;
-	while (argv[i])
-	{
-		free(argv[i]);
-		i++;
-	}
-	free(argv);
-}
-
-char	build_arg_from_words(t_shell *sh, const t_cmd *cmd)
+char	**build_arg_from_words(t_shell *sh, const t_cmd *cmd)
 {
 	char	**argv;
 	int		i;
@@ -47,6 +32,21 @@ char	build_arg_from_words(t_shell *sh, const t_cmd *cmd)
 	return (argv);
 }
 
+int	is_stateful_builtin(const t_cmd *cmd)
+{
+	if (!cmd)
+		return (0);
+	if (cmd->builtin_id == BI_CD)
+		return (1);
+	if (cmd->builtin_id == BI_EXPORT)
+		return (1);
+	if (cmd->builtin_id == BI_UNSET)
+		return (1);
+	if (cmd->builtin_id == BI_EXIT)
+		return (1);
+	return (0);
+}
+
 int	exec_builtin(t_shell *sh, t_cmd *cmd)
 {
 	char	**argv;
@@ -64,8 +64,8 @@ int	exec_builtin(t_shell *sh, t_cmd *cmd)
 		rc = builtin_pwd(argv);
 	else if (cmd->builtin_id == BI_ENV)
 		rc = builtin_env(sh, argv);
-	else if (cmd->builtin_id == BI_EXIT)
-		rc = builtin_exit(sh, argv);
+	else if (cmd->builtin_id == BI_CD)
+		rc = builtin_cd(sh, argv);
 	else if (cmd->builtin_id == BI_EXPORT)
 		rc = builtin_export(sh, argv);
 	else if (cmd->builtin_id == BI_UNSET)

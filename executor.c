@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_pipeline.c                                 :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 14:50:18 by msnizek           #+#    #+#             */
-/*   Updated: 2026/02/19 17:11:09 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/19 23:04:56 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	wait_status_to_code(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	else if (WIFESIGNALED(status))
+	else if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
 	return (1);
 }
@@ -32,19 +32,21 @@ static int	exec_parent_builtin(t_shell *sh, t_cmd *cmd)
 	int		saved_out;
 	int		rc;
 
-	saved_in = dup(STDIN_FILENO);
-	saved_out = dup(STDOUT_FILENO);
-	if (saved_in < 0 || saved_out < 0)
-		return (perror("dup"), sh->last_status = 1, 1);
+	saved_in = -1;
+	saved_out = -1;
 	if (apply_redirs(cmd, &saved_in, &saved_out) != 0)
-		return (restore_redirs(saved_in, saved_out), sh->last_status = 1, 1);
+	{
+		restore_redirs(saved_in, saved_out);
+		sh->last_status = 1;
+		return (1);
+	}
 	rc = exec_builtin(sh, cmd);
 	restore_redirs(saved_in, saved_out);
 	return (rc);
 }
 
 // create child, in child run the command, parent -> wait
-static int	exec_single_command(t_shell *sh, t_cmd *cmd)
+static int	exec_single_command(t_shell *sh, t_pipeline *p)
 {
 	pid_t	pid;
 	int		status;
@@ -54,7 +56,7 @@ static int	exec_single_command(t_shell *sh, t_cmd *cmd)
 		return (perror("fork"), sh->last_status = 1, 1);
 	if (pid == 0)
 	{
-		exec_command_child(sh, cmd);
+		exec_command_child(sh, p, 0);
 		_exit(sh->last_status);
 	}
 	if (waitpid(pid, &status, 0) < 0)
@@ -63,31 +65,22 @@ static int	exec_single_command(t_shell *sh, t_cmd *cmd)
 	return (sh->last_status);
 }
 
-static int	is_stateful_builtin(const t_cmd *cmd)
-{
-	if (!cmd)
-		return (0);
-	if (cmd->builtin_id == BI_CD)
-		return (1);
-	if (cmd->builtin_id == BI_EXPORT)
-		return (1);
-	if (cmd->builtin_id == BI_UNSET)
-		return (1);
-	if (cmd->builtin_id == BI_EXIT)
-		return (1);
-	return (0);
-}
-
 // do a single command or commands with pipe
 int	execute_pipeline(t_shell *sh, t_pipeline *p)
 {
+	int	status;
+
 	if (!sh || !p || p->count <= 0)
-		return (perror("execute_pipeline"), 1);
+		return (1);
 	if (prepare_heredocs(sh, p) != 0)
 		return (sh->last_status = 1, 1);
+	setup_parent_signals();
 	if (p->count == 1 && is_stateful_builtin(p->cmds[0]))
-		return (exec_parent_builtin(sh, p->cmds[0]));
-	if (p->count == 1)
-		return (exec_single_command(sh, p->cmds[0]));
-	return (exec_multi_pipeline(sh, p));
+		status = exec_parent_builtin(sh, p->cmds[0]);
+	else if (p->count == 1)
+		status = exec_single_command(sh, p);
+	else
+		status = exec_multi_pipeline(sh, p);
+	setup_interactive_signals();
+	return (status);
 }

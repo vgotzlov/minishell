@@ -20,10 +20,9 @@ static void	manage_pipe_fds(int prev_fd, int pipe_fds[2], int i, int count)
 		close(prev_fd);
 	}
 	if (i < count - 1)
-		dup2(pipe_fds[1], STDOUT_FILENO);
-	if (i < count - 1)
 	{
 		close(pipe_fds[0]);
+		dup2(pipe_fds[1], STDOUT_FILENO);
 		close(pipe_fds[1]);
 	}
 }
@@ -31,9 +30,10 @@ static void	manage_pipe_fds(int prev_fd, int pipe_fds[2], int i, int count)
 static int	move_pipe_fd(int pipe_fds[2], int i, int count)
 {
 	if (i < count - 1)
+	{
 		close(pipe_fds[1]);
-	if (i < count - 1)
 		return (pipe_fds[0]);
+	}
 	return (-1);
 }
 
@@ -57,9 +57,28 @@ static int	wait_for_pipeline(t_shell *sh, t_pipeline *p)
 	return (sh->last_status);
 }
 
-int	exec_multi_pipeline(t_shell *sh, t_pipeline *p)
+static int	fork_and_run(t_shell *sh, t_pipeline *p, int i, int *prev_fd)
 {
 	int	pipe_fds[2];
+
+	if (i < p->count - 1 && pipe(pipe_fds) == -1)
+		return (perror("pipe"), 1);
+	p->pids[i] = fork();
+	if (p->pids[i] == -1)
+		return (perror("fork"), 1);
+	if (p->pids[i] == 0)
+	{
+		manage_pipe_fds(*prev_fd, pipe_fds, i, p->count);
+		exec_command_child(sh, p, i);
+	}
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	*prev_fd = move_pipe_fd(pipe_fds, i, p->count);
+	return (0);
+}
+
+int	exec_multi_pipeline(t_shell *sh, t_pipeline *p)
+{
 	int	prev_fd;
 	int	i;
 
@@ -67,22 +86,12 @@ int	exec_multi_pipeline(t_shell *sh, t_pipeline *p)
 	if (!p->pids)
 		return (perror("malloc"), 1);
 	prev_fd = -1;
-	i = -1;
-	while (++i < p->count)
+	i = 0;
+	while (i < p->count)
 	{
-		if (i < p->count - 1 && pipe(pipe_fds) == -1)
-			return (perror("pipe"), 1);
-		p->pids[i] = fork();
-		if (p->pids[i] == -1)
-			return (perror("fork"), 1);
-		if (p->pids[i] == 0)
-		{
-			manage_pipe_fds(prev_fd, pipe_fds, i, p->count);
-			exec_command_child(sh, p->cmds[i]);
-		}
-		if (prev_fd != -1)
-			close(prev_fd);
-		prev_fd = move_pipe_fd(pipe_fds, i, p->count);
+		if (fork_and_run(sh, p, i, &prev_fd))
+			return (1);
+		i++;
 	}
 	return (wait_for_pipeline(sh, p));
 }
