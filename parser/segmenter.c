@@ -6,13 +6,13 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 09:34:41 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 09:36:34 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 10:49:26 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Rozseká lexeme na segmenty a provede automatické odstranění vnějších uvozovek (Quote Removal).
+// Rozseká lexeme na segmenty a provede automatické odstranění vnějších uvozovek
 t_segment	*segmentize(char *lexeme)
 {
 	t_segment	*head;

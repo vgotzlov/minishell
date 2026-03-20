@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 09:32:03 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 09:32:54 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 10:48:48 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	add_segment_back(t_segment **head, t_segment *new_node)
 }
 
 //Funkce, která zjistí, jestli uvozovka mění náš aktuální stav.
-// Např. pokud jsme v Q_DOUBLE a narazíme na ', je to obyčejný znak, nemění stav.
-
 int	is_state_changing_quote(char c, t_quote state)
 {
 	if (c == '\'' && (state == Q_NONE || state == Q_SINGLE))
@@ -52,5 +50,3 @@ int	is_state_changing_quote(char c, t_quote state)
 		return (1);
 	return (0);
 }
-
-

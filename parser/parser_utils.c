@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 14:50:47 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/06 15:19:23 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 10:39:18 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	count_commands(t_token *tokens)
 	t_token	*tmp;
 
 	if (!tokens)
-		return(0);
+		return (0);
 	count = 1;
 	tmp = tokens;
 	while (tmp)
@@ -41,5 +41,5 @@ t_cmd	*init_cmd(void)
 	cmd->argc = 0;
 	cmd->redirs = NULL;
 	cmd->builtin_id = -1;
-	return(cmd);
+	return (cmd);
 }

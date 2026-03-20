@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 17:11:36 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/06 14:37:11 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 10:51:15 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,3 @@ t_token	*lexer(char *line)
 	}
 	return (head);
 }
-

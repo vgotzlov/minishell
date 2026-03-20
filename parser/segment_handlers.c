@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 09:33:23 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 09:34:25 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 10:46:57 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@ void	handle_dollar(char *str, int *i, t_quote state, t_segment **head)
 	int		start;
 	char	*text;
 
-	(*i)++; // skip '$'
-	if (str[*i] == '?') // Speciální proměnná $?
+	(*i)++;
+	if (str[*i] == '?')
 	{
-		add_segment_back(head, create_segment(SEG_STATUS, ft_strdup("?"), state));
+		add_segment_back(head,
+			create_segment(SEG_STATUS, ft_strdup("?"), state));
 		(*i)++;
 	}
 	else if (ft_isalpha(str[*i]) || str[*i] == '_')

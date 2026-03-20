@@ -6,14 +6,13 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 09:22:54 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 09:26:57 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 10:45:15 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Převede typ tokenu z lexeru na typ redirekce pro parser.
-
 static t_redir_type	get_redir_type(t_tok_type tok_type)
 {
 	if (tok_type == TOK_REDIR_IN)
@@ -26,7 +25,6 @@ static t_redir_type	get_redir_type(t_tok_type tok_type)
 }
 
 // Vytvoří a zinicializuje nový node t_redir.
-
 t_redir	*create_redir_node(t_redir_type type, char *target_lexeme)
 {
 	t_redir	*node;
@@ -36,7 +34,7 @@ t_redir	*create_redir_node(t_redir_type type, char *target_lexeme)
 		return (NULL);
 	node->type = type;
 	node->target = create_word_node(target_lexeme);
-	node->delim_raw = NULL; // Vyřeší se později, pokud to bude heredoc
+	node->delim_raw = NULL;
 	node->delim_quoted = 0;
 	node->heredoc_fd = -1;
 	node->next = NULL;
@@ -68,7 +66,6 @@ int	handle_redirection(t_cmd *cmd, t_token **current_token)
 
 	op_tok = *current_token;
 	target_tok = op_tok->next;
-
 	if (!target_tok || target_tok->type != TOK_WORD)
 	{
 		printf("minishell: syntax error near unexpected token\n");
@@ -77,7 +74,7 @@ int	handle_redirection(t_cmd *cmd, t_token **current_token)
 	r_type = get_redir_type(op_tok->type);
 	new_redir = create_redir_node(r_type, target_tok->lexeme);
 	if (!new_redir)
-		return (0); // Malloc failed
+		return (0);
 	add_redir_back(&(cmd->redirs), new_redir);
 	*current_token = target_tok->next;
 	return (1);

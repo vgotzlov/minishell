@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 18:25:29 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/06 13:59:45 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 10:53:06 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ t_segment	*segmentize(char *lexeme)
 			if (lexeme[i] == '?')
 			{
 				i++;
-				add_segment_back(&head, create_segment(SEG_STATUS, state, ft_strdup("$?")));
+				add_segment_back(&head,
+					create_segment(SEG_STATUS, state, ft_strdup("$?")));
 			}
 			else if (ft_isalpha(lexeme[i]) || lexeme[i] == '_')
 			{
