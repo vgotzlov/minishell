@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	child_apply_redirs(t_cmd *cmd)
+static int	child_apply_redirs(t_cmd *cmd, t_shell *sh)
 {
 	t_redir	*r;
 	int		fd;
@@ -23,7 +23,7 @@ static int	child_apply_redirs(t_cmd *cmd)
 		if (r->type == R_HEREDOC)
 			fd = r->heredoc_fd;
 		else
-			fd = open_redir(r);
+			fd = open_redir(r, sh);
 		if (fd == -1)
 			return (1);
 		if (dup2(fd, get_target(r->type)) == -1)
@@ -43,7 +43,7 @@ static int	child_run_builtin(t_shell *sh, t_pipeline *p, t_cmd *cmd)
 {
 	int	status;
 
-	if (child_apply_redirs(cmd) != 0)
+	if (child_apply_redirs(cmd, sh) != 0)
 	{
 		perror("redirections");
 		free_pipeline(p);
@@ -61,18 +61,18 @@ static int	child_run_external(t_shell *sh, t_pipeline *p, t_cmd *cmd)
 	char		*path;
 	char		**argv;
 
-	if (child_apply_redirs(cmd) != 0)
+	if (child_apply_redirs(cmd, sh) != 0)
 	{
 		perror("minishell: redirection");
 		free_pipeline(p);
 		free_shell(sh);
 		_exit(1);
 	}
-	argv = build_arg_from_words(sh, cmd);
+	argv = create_exec_argv(cmd, sh);
 	if (!argv || !argv[0])
 	{
 		if (argv)
-			free_argv(argv);
+			free_str_array(argv);
 		free_pipeline(p);
 		free_shell(sh);
 		_exit(0);

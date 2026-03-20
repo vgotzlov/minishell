@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:19:38 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 10:41:04 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 15:18:06 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ t_pipeline	*init_pipeline(int cmd_count)
 	t_pipeline	*pipe;
 	int			i;
 
-	pipe = malloc(sizeof(t_pipeline));
+	pipe = ft_calloc(1, sizeof(t_pipeline));
 	if (!pipe)
 		return (NULL);
 	pipe->count = cmd_count;
-	pipe->cmds = malloc(sizeof(t_cmd *) * (cmd_count + 1));
+	pipe->cmds = ft_calloc(cmd_count + 1, sizeof(t_cmd *));
+	pipe->pids = NULL;
 	if (!pipe->cmds)
 	{
 		free(pipe);
@@ -44,5 +45,7 @@ t_pipeline	*parser(t_token *tokens)
 	pipeline = init_pipeline(cmd_count);
 	if (!pipeline)
 		return (NULL);
+	fill_pipeline(pipeline, tokens);
+	identify_builtins(pipeline);
 	return (pipeline);
 }

@@ -85,6 +85,11 @@ int	prepare_heredocs(t_shell *sh, t_pipeline *p)
 	i = 0;
 	while (i < p->count)
 	{
+		if (!p->cmds[i])
+		{
+			i++;
+			continue;
+		}
 		r = p->cmds[i]->redirs;
 		while (r)
 		{

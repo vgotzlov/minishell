@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+         #
+#    By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/12 16:31:20 by msnizek           #+#    #+#              #
-#    Updated: 2026/03/20 13:17:47 by msnizek          ###   ########.fr        #
+#    Updated: 2026/03/20 14:47:34 by vgotzlov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,14 @@ CFLAGS	= -Wall -Wextra -Werror -I.
 LDFLAGS	= -Llibft -lft -lreadline
 
 SRC			=	lexer/lexer_operators.c \
-				lexer/lexer_segments.c \
 				lexer/lexer_utils.c \
 				lexer/lexer_words.c \
-				lexer/lexer_utils.c \
+				lexer/lexer.c \
+				lexer/token_utils.c \
 				parser/segment_handlers.c \
 				parser/segment_utils.c \
 				parser/segmenter.c \
 				parser/parser_args.c \
-				parser/parser_cmd.c \
 				parser/parser_cmd.c \
 				parser/parser_redirs.c \
 				parser/parser_utils.c \
@@ -49,7 +48,6 @@ SRC			=	lexer/lexer_operators.c \
 				builtin_export.c \
 				builtin_unset.c \
 				builtins_nonstateful.c \
-				builtin_dispatch_utils.c \
 				builtin_dispatch.c \
 				main.c \
 
