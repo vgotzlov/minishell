@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/06 14:34:35 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 09:29:58 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,5 +173,47 @@ int			get_target(int type);
 char		*word_to_pure_string(t_word *w);
 int			apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out);
 void		restore_redirs(int saved_in, int saved_out);
+
+// Global variable
+extern volatile sig_atomic_t	g_sig;
+
+void		skip_spaces(char *line, int *i);
+
+// lexer_words.c
+void		update_quote_state(char c, t_quote *state);
+int			is_delimiter(char c);
+int			get_word_length(char *line, int start, t_quote *out_quote);
+
+// lexer_operators.c
+int			handle_operator(char *line, int *i, t_token **head);
+
+// lexer.c
+t_token		*lexer(char *line);
+
+// token_utils.c
+t_token		*create_token(t_tok_type type, char *lexeme, t_quote quote_type);
+void		add_token_back(t_token **head, t_token *new_token);
+void		free_tokens(t_token *head);
+
+// lexer_segments.c
+t_segment	*segmentize(char *lexeme);
+
+// parser_utils.c
+int			count_commands(t_token *tokens);
+t_cmd		*init_cmd(void);
+
+// parser.c
+t_pipeline	*init_pipeline(int cmd_count);
+t_pipeline	*parser(t_token *tokens);
+
+// parser_args.c
+t_word		*create_word_node(char *lexeme);
+int			is_redir_token(t_tok_type type);
+int			count_args(t_token *tokens);
+
+//parser_redirs.c
+t_redir	*create_redir_node(t_redir_type type, char *target_lexeme);
+void	add_redir_back(t_redir **head, t_redir *new_node);
+int	handle_redirection(t_cmd *cmd, t_token **current_token);
 
 #endif
