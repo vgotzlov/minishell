@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 17:53:18 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/06 18:05:58 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 09:27:44 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,8 @@ void	fill_cmd(t_cmd *cmd, t_token **tokens)
 	{
 		if (is_redir_token(tmp->type))
 		{
-			tmp = tmp->next;
-			if (tmp)
-				tmp = tmp->next;
+			if (!handle_redirection(cmd, &tmp))
+				return ;
 		}
 		else if (tmp->type == TOK_WORD)
 		{

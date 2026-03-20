@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/06 17:52:12 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 09:29:58 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,5 +210,10 @@ t_pipeline	*parser(t_token *tokens);
 t_word		*create_word_node(char *lexeme);
 int			is_redir_token(t_tok_type type);
 int			count_args(t_token *tokens);
+
+//parser_redirs.c
+t_redir	*create_redir_node(t_redir_type type, char *target_lexeme);
+void	add_redir_back(t_redir **head, t_redir *new_node);
+int	handle_redirection(t_cmd *cmd, t_token **current_token);
 
 #endif

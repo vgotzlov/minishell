@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 17:10:47 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/06 17:50:35 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 09:37:33 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ t_word	*create_word_node(char *lexeme)
 	word = malloc(sizeof(t_word));
 	if (!word)
 		return (NULL);
-	word->segs = NULL; 
-	(void)lexeme;
+	word->segs = segmentize(lexeme);
 	return (word);
 }
