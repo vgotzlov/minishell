@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/20 11:45:34 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/20 15:18:52 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,6 @@ typedef struct s_shell
 extern volatile sig_atomic_t	g_sig;
 
 // Builtins
-char		*word_to_string(t_shell *sh, t_word *w);
-char		**build_arg_from_words(t_shell *sh, const t_cmd *cmd);
 int			exec_builtin(t_shell *sh, t_cmd *cmd);
 int			builtin_cd(t_shell *sh, char **argv);
 int			builtin_exit(t_shell *sh, char **argv);
@@ -188,10 +186,10 @@ char		*get_cmd_path(t_shell *sh, char *cmd);
 
 // Redirections
 int			save_original_fd(int target, int *saved_in, int *saved_out);
-int			open_redir(t_redir *r);
+int			open_redir(t_redir *r, t_shell *sh);
 int			get_target(int type);
 char		*word_to_pure_string(t_word *w);
-int			apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out);
+int			apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out, t_shell *sh);
 void		restore_redirs(int saved_in, int saved_out);
 
 // Signals
@@ -229,9 +227,6 @@ t_token		*create_token(t_tok_type type, char *lexeme, t_quote quote_type);
 void		add_token_back(t_token **head, t_token *new_token);
 void		free_tokens(t_token *head);
 
-// lexer_segments.c
-t_segment	*segmentize(char *lexeme);
-
 // parser.c
 t_pipeline	*init_pipeline(int cmd_count);
 t_pipeline	*parser(t_token *tokens);
@@ -253,6 +248,7 @@ int			handle_redirection(t_cmd *cmd, t_token **current_token);
 // parser_utils.c
 int			count_commands(t_token *tokens);
 t_cmd		*init_cmd(void);
+void		identify_builtins(t_pipeline *p);
 
 //segmenter
 t_segment	*segmentize(char *lexeme);

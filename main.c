@@ -23,10 +23,10 @@ static void	init_shell(t_shell *sh, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell	sh;
-	//t_pipeline	*pipeline;
+	t_shell		sh;
+	t_pipeline	*pipeline;
 	char		*line;
-	//t_tokens	*tokens;
+	t_token		*tokens;
 
 	(void)argc;
 	(void)argv;
@@ -56,16 +56,19 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		add_history(line);
-		/*tokens = lexer(line);			
+		tokens = lexer(line);			
 		if (tokens)
 		{
 			pipeline = parser(tokens);
 			if (pipeline)
 			{
 				execute_pipeline(&sh, pipeline);
-				free_pipeline(pipeline);				}
-				free_tokens(tokens);
-			}*/
+				free_pipeline(pipeline);
+			}
+			else
+				sh.last_status = 2;
+			free_tokens(tokens);
+		}
 		free(line);
 	}
 	free_shell(&sh);

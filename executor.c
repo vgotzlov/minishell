@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 14:50:18 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/19 23:04:56 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/20 15:27:27 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	exec_parent_builtin(t_shell *sh, t_cmd *cmd)
 
 	saved_in = -1;
 	saved_out = -1;
-	if (apply_redirs(cmd, &saved_in, &saved_out) != 0)
+	if (apply_redirs(cmd, &saved_in, &saved_out, sh) != 0)
 	{
 		restore_redirs(saved_in, saved_out);
 		sh->last_status = 1;
@@ -70,6 +70,7 @@ int	execute_pipeline(t_shell *sh, t_pipeline *p)
 {
 	int	status;
 
+	if (p->count > 0 && p->cmds[0])
 	if (!sh || !p || p->count <= 0)
 		return (1);
 	if (prepare_heredocs(sh, p) != 0)

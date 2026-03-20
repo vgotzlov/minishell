@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 11:13:20 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/20 11:37:05 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/20 15:23:02 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	check_path(char *path, char **argv, t_shell *sh, t_pipeline *p)
 	{
 		ft_putstr_fd(argv[0], 2);
 		ft_putendl_fd(": command not found", 2);
-		free_argv(argv);
+		free_str_array(argv);
 		free_pipeline(p);
 		free_shell(sh);
 		_exit(127);
@@ -30,7 +30,7 @@ static void	check_path(char *path, char **argv, t_shell *sh, t_pipeline *p)
 		ft_putstr_fd(argv[0], 2);
 		ft_putendl_fd(": Is a directory", 2);
 		free(path);
-		free_argv(argv);
+		free_str_array(argv);
 		free_pipeline(p);
 		free_shell(sh);
 		_exit(126);
@@ -46,7 +46,7 @@ void	exec_and_free(t_shell *sh, t_pipeline *p, char *path, char **argv)
 	if (!envp)
 	{
 		free(path);
-		free_argv(argv);
+		free_str_array(argv);
 		free_pipeline(p);
 		free_shell(sh);
 		_exit(1);
@@ -54,8 +54,8 @@ void	exec_and_free(t_shell *sh, t_pipeline *p, char *path, char **argv)
 	execve(path, argv, envp);
 	perror(argv[0]);
 	free(path);
-	free_argv(argv);
-	free_array(envp);
+	free_str_array(argv);
+	free_str_array(envp);
 	free_pipeline(p);
 	free_shell(sh);
 	_exit(126);
@@ -70,7 +70,7 @@ char	*get_child_path(t_shell *sh, t_pipeline *p, char **argv)
 	{
 		ft_putstr_fd(argv[0], 2);
 		ft_putendl_fd(": command not found", 2);
-		free_argv(argv);
+		free_str_array(argv);
 		free_pipeline(p);
 		free_shell(sh);
 		_exit(127);
