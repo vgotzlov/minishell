@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/20 09:29:58 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 11:33:39 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,10 +198,6 @@ void		free_tokens(t_token *head);
 // lexer_segments.c
 t_segment	*segmentize(char *lexeme);
 
-// parser_utils.c
-int			count_commands(t_token *tokens);
-t_cmd		*init_cmd(void);
-
 // parser.c
 t_pipeline	*init_pipeline(int cmd_count);
 t_pipeline	*parser(t_token *tokens);
@@ -211,9 +207,39 @@ t_word		*create_word_node(char *lexeme);
 int			is_redir_token(t_tok_type type);
 int			count_args(t_token *tokens);
 
+//parser_cmd
+void		fill_cmd(t_cmd *cmd, t_token **tokens);
+void		fill_pipeline(t_pipeline *pipe, t_token *tokens);
+
 //parser_redirs.c
-t_redir	*create_redir_node(t_redir_type type, char *target_lexeme);
-void	add_redir_back(t_redir **head, t_redir *new_node);
-int	handle_redirection(t_cmd *cmd, t_token **current_token);
+t_redir		*create_redir_node(t_redir_type type, char *target_lexeme);
+void		add_redir_back(t_redir **head, t_redir *new_node);
+int			handle_redirection(t_cmd *cmd, t_token **current_token);
+
+// parser_utils.c
+int			count_commands(t_token *tokens);
+t_cmd		*init_cmd(void);
+
+//segmenter
+t_segment	*segmentize(char *lexeme);
+
+//segment_utils
+t_segment	*create_segment(t_seg_type type, char *text, t_quote q_ctx);
+void		add_segment_back(t_segment **head, t_segment *new_node);
+int			is_state_changing_quote(char c, t_quote state);
+
+//segment_handelrs
+void		handle_dollar(char *str, int *i, t_quote state, t_segment **head);
+void		handle_literal(char *str, int *i, t_quote state, t_segment **head);
+
+//expander
+char		*get_segment_str(t_segment *seg, t_shell *shell);
+char		*expand_word(t_word *word, t_shell *shell);
+
+//expander_utils
+char		*get_env_value(t_env *env_list, char *key);
+char		*join_and_free(char *s1, char *s2);
+char		**create_exec_argv(t_cmd *cmd, t_shell *shell);
+void		free_str_array(char **arr);
 
 #endif
