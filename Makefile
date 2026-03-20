@@ -6,16 +6,32 @@
 #    By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/12 16:31:20 by msnizek           #+#    #+#              #
-#    Updated: 2026/03/20 11:35:50 by msnizek          ###   ########.fr        #
+#    Updated: 2026/03/20 13:17:47 by msnizek          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -I.
 LDFLAGS	= -Llibft -lft -lreadline
 
-SRC			=	clean_up.c \
+SRC			=	lexer/lexer_operators.c \
+				lexer/lexer_segments.c \
+				lexer/lexer_utils.c \
+				lexer/lexer_words.c \
+				lexer/lexer_utils.c \
+				parser/segment_handlers.c \
+				parser/segment_utils.c \
+				parser/segmenter.c \
+				parser/parser_args.c \
+				parser/parser_cmd.c \
+				parser/parser_cmd.c \
+				parser/parser_redirs.c \
+				parser/parser_utils.c \
+				parser/parser.c \
+				expander/expander_utils.c \
+				expander/expander.c \
+				clean_up.c \
 				clean_pipeline.c \
 				env_utils.c \
 				child_utils.c \

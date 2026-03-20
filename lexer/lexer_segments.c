@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_segments.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 18:25:29 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 10:53:06 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/20 13:14:59 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_segment	*create_segment(t_seg_type type, t_quote ctx, char *text)
+t_segment	*create_segment(t_seg_type type, char *text, t_quote q_ctx)
 {
 	t_segment	*seg;
 
-	*seg = malloc(sizeof(t_segment));
+	seg = malloc(sizeof(t_segment));
 	if (!seg)
 		return (NULL);
 	seg->type = type;
-	seg->quote_ctx = ctx;
+	seg->quote_ctx = q_ctx;
 	seg->text = text;
 	seg->next = NULL;
 	return (seg);
 }
 
-static void	add_segment_back(t_segment **head, t_segment *new)
+void	add_segment_back(t_segment **head, t_segment *new)
 {
 	t_segment	*tmp;
 
@@ -62,8 +62,7 @@ t_segment	*segmentize(char *lexeme)
 			if (lexeme[i] == '?')
 			{
 				i++;
-				add_segment_back(&head,
-					create_segment(SEG_STATUS, state, ft_strdup("$?")));
+				add_segment_back(&head, create_segment(SEG_VAR, text, state));
 			}
 			else if (ft_isalpha(lexeme[i]) || lexeme[i] == '_')
 			{
@@ -71,12 +70,12 @@ t_segment	*segmentize(char *lexeme)
 				while (ft_isalnum(lexeme[i]) || lexeme[i] == '_')
 					i++;
 				text = ft_substr(lexeme, start, i - start);
-				add_segment_back(&head, create_segment(SEG_VAR, state, text));
+				add_segment_back(&head, create_segment(SEG_VAR, text, state));
 			}
 			else
 			{
 				text = ft_substr(lexeme, start - 1, i - start + 1);
-				add_segment_back(&head, create_segment(SEG_LIT, state, text));
+				add_segment_back(&head, create_segment(SEG_LIT, text, state));
 			}
 		}
 		else if (lexeme[i] == '\'' || lexeme[i] == '"')
@@ -90,7 +89,7 @@ t_segment	*segmentize(char *lexeme)
 				&& lexeme[i] != '\'' && lexeme[i] != '"')
 				i++;
 			text = ft_substr(lexeme, start, i - start);
-			add_segment_back(&head, create_segment(SEG_LIT, state, text));
+			add_segment_back(&head, create_segment(SEG_LIT, text, state));
 		}
 	}
 	return (head);
