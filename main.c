@@ -33,9 +33,20 @@ int	main(int argc, char **argv, char **envp)
 	init_shell(&sh, envp);
 	while (1)
 	{
-		setup_interactive_signals();
 		g_sig = 0;
-		line = readline("minishell$ ");
+		if (isatty(STDIN_FILENO))
+			line = readline("minishell$ ");
+		else
+		{
+			ft_putstr_fd("minishell$ \n", 1); 
+			line = get_next_line(STDIN_FILENO);
+			if (line)
+			{
+				int len = ft_strlen(line);
+				if (len > 0 && line[len - 1] == '\n')
+					line[len - 1] = '\0';
+			}
+		}
 		if (g_sig == SIGINT)
 		{
 			sh.last_status = 130;
@@ -46,7 +57,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (!line)
 		{
-			if (sh.interactive)
+			if (isatty(STDIN_FILENO))
 				ft_putendl_fd("exit", 1);
 			break;
 		}
@@ -55,7 +66,8 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		add_history(line);
+		if (isatty(STDIN_FILENO))
+			add_history(line);
 		tokens = lexer(line);			
 		if (tokens)
 		{
@@ -72,6 +84,7 @@ int	main(int argc, char **argv, char **envp)
 		free(line);
 	}
 	free_shell(&sh);
-	rl_clear_history();
+	if (isatty(STDIN_FILENO))
+		rl_clear_history();
 	return (sh.last_status);
 }

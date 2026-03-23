@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:36:48 by msnizek           #+#    #+#             */
-/*   Updated: 2025/09/10 15:13:46 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/23 10:01:32 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,25 +85,3 @@ char	*get_next_line(int fd)
 	stash = clean_stash(stash);
 	return (line);
 }
-/*
-int	main(void)
-{
-	char	*line;
-	int		fd;
-
-	fd = open("test.txt", O_RDONLY);
-	if (fd < 0)
-	{
-		printf("Error");
-		return (1);
-	}
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		printf("%s", line);
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	return (0);
-}*/

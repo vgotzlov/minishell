@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+         #
+#    By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/12 16:31:20 by msnizek           #+#    #+#              #
-#    Updated: 2026/03/20 14:47:34 by vgotzlov         ###   ########.fr        #
+#    Updated: 2026/03/23 12:38:07 by msnizek          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,25 +30,26 @@ SRC			=	lexer/lexer_operators.c \
 				parser/parser.c \
 				expander/expander_utils.c \
 				expander/expander.c \
-				clean_up.c \
-				clean_pipeline.c \
-				env_utils.c \
-				child_utils.c \
-				child.c \
-				heredocs.c \
-				path.c \
-				redirections_utils.c \
-				redirections.c \
-				signals.c \
-				pipes.c \
-				executor.c \
-				builtin_cd.c \
-				builtin_exit.c \
-				builtin_export_utils.c \
-				builtin_export.c \
-				builtin_unset.c \
-				builtins_nonstateful.c \
-				builtin_dispatch.c \
+				executor/clean_up.c \
+				executor/clean_pipeline.c \
+				executor/env_utils.c \
+				executor/child_utils.c \
+				executor/child.c \
+				executor/heredocs.c \
+				executor/path.c \
+				executor/redirections_utils.c \
+				executor/redirections.c \
+				executor/signals.c \
+				executor/pipes.c \
+				executor/executor.c \
+				builtins/builtin_cd.c \
+				builtins/builtin_exit.c \
+				builtins/builtin_export_utils.c \
+				builtins/builtin_export.c \
+				builtins/builtin_unset.c \
+				builtins/builtins_nonstateful.c \
+				builtins/builtin_dispatch_utils.c \
+				builtins/builtin_dispatch.c \
 				main.c \
 
 OBJ			= $(SRC:.c=.o)

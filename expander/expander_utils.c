@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:25:38 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 15:25:41 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/23 12:15:15 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,14 @@ char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-char	**create_exec_argv(t_cmd *cmd, t_shell *shell)
+char    **create_exec_argv(t_cmd *cmd, t_shell *shell)
 {
-	char	**argv;
-	int		i;
+    char        **argv;
+    char        *expanded;
+    int         i;
+    int         j;
+    t_segment   *seg;
+    int         only_var;
 
 	if (!cmd || cmd->argc == 0)
 		return (NULL);
@@ -52,12 +56,30 @@ char	**create_exec_argv(t_cmd *cmd, t_shell *shell)
 	if (!argv)
 		return (NULL);
 	i = 0;
+	j = 0;
 	while (i < cmd->argc)
 	{
-		argv[i] = expand_word(cmd->argv_words[i], shell);
+		expanded = expand_word(cmd->argv_words[i], shell);
+		only_var = 1;
+		if (cmd->argv_words[i] && cmd->argv_words[i]->segs)
+		{
+			seg = cmd->argv_words[i]->segs;
+			while (seg)
+			{
+				if (seg->type != SEG_VAR)
+					only_var = 0;
+				seg = seg->next;
+			}
+		}
+		else
+			only_var = 0;
+		if (expanded && expanded[0] == '\0' && only_var)
+			free(expanded);
+		else
+			argv[j++] = expanded;
 		i++;
 	}
-	argv[i] = NULL;
+	argv[j] = NULL;
 	return (argv);
 }
 

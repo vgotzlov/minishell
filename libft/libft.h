@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:35:43 by msnizek           #+#    #+#             */
-/*   Updated: 2025/09/10 11:46:14 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/23 10:01:14 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
-
-
 
 //	Part 1:
 int		ft_isalpha(int c);
@@ -82,14 +80,14 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 // Printf
-int	print_character(int c);
-int	print_string(char *s);
-int	print_percent(void);
-int	print_decimal(int n);
-int	print_unsigned(unsigned long n, int base, int uppercase);
-int	print_pointer(void *ptr);
-int	formats(va_list args, char format);
-int	ft_printf(const char *s, ...);
+int		print_character(int c);
+int		print_string(char *s);
+int		print_percent(void);
+int		print_decimal(int n);
+int		print_unsigned(unsigned long n, int base, int uppercase);
+int		print_pointer(void *ptr);
+int		formats(va_list args, char format);
+int		ft_printf(const char *s, ...);
 
 // Get next line
 char	*get_next_line(int fd);

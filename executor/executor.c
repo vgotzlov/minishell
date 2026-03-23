@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 14:50:18 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/20 15:27:27 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/23 11:26:26 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	execute_pipeline(t_shell *sh, t_pipeline *p)
 {
 	int	status;
 
-	if (p->count > 0 && p->cmds[0])
 	if (!sh || !p || p->count <= 0)
 		return (1);
 	if (prepare_heredocs(sh, p) != 0)
