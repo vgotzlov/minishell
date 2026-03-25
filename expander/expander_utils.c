@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:25:38 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/25 17:13:51 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:48:52 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,28 @@ char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
+static int	is_only_variable(t_word *word)
+{
+	t_segment	*seg;
+
+	if (!word || !word->segs)
+		return (0);
+	seg = word->segs;
+	while (seg)
+	{
+		if (seg->type != SEG_VAR)
+			return (0);
+		seg = seg->next;
+	}
+	return (1);
+}
+
 char	**create_exec_argv(t_cmd *cmd, t_shell *shell)
 {
 	char		**argv;
 	char		*expanded;
 	int			i;
 	int			j;
-	t_segment	*seg;
-	int			only_var;
 
 	if (!cmd || cmd->argc == 0)
 		return (NULL);
@@ -60,20 +74,8 @@ char	**create_exec_argv(t_cmd *cmd, t_shell *shell)
 	while (i < cmd->argc)
 	{
 		expanded = expand_word(cmd->argv_words[i], shell);
-		only_var = 1;
-		if (cmd->argv_words[i] && cmd->argv_words[i]->segs)
-		{
-			seg = cmd->argv_words[i]->segs;
-			while (seg)
-			{
-				if (seg->type != SEG_VAR)
-					only_var = 0;
-				seg = seg->next;
-			}
-		}
-		else
-			only_var = 0;
-		if (expanded && expanded[0] == '\0' && only_var)
+		if (expanded && expanded[0] == '\0'
+			&& is_only_variable(cmd->argv_words[i]))
 			free(expanded);
 		else
 			argv[j++] = expanded;
@@ -97,4 +99,3 @@ void	free_str_array(char **arr)
 	}
 	free(arr);
 }
-

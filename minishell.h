@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/25 17:17:23 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:32:16 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ int			check_syntax(t_token *tokens);
 int			count_commands(t_token *tokens);
 t_cmd		*init_cmd(void);
 void		identify_builtins(t_pipeline *p);
+void	builtins_logic(t_cmd *cmd);
 
 //segmenter
 t_segment	*segmentize(char *lexeme);

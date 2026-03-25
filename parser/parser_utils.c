@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 14:50:47 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/25 17:02:57 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:30:20 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	check_syntax(t_token *tokens)
 		{
 			if (!tmp->next || tmp->next->type == TOK_PIPE)
 			{
-				ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+				ft_putendl_fd
+					("minishell: syntax error near unexpected token `|'", 2);
 				return (0);
 			}
 		}
@@ -73,7 +74,6 @@ void	identify_builtins(t_pipeline *p)
 {
 	int		i;
 	t_cmd	*cmd;
-	char	*name;
 
 	i = 0;
 	while (i < p->count)
@@ -82,22 +82,29 @@ void	identify_builtins(t_pipeline *p)
 		cmd->builtin_id = 0;
 		if (cmd->argc > 0 && cmd->argv_words && cmd->argv_words[0]->segs)
 		{
-			name = cmd->argv_words[0]->segs->text;
-			if (ft_strncmp(name, "cd", 3) == 0)
-				cmd->builtin_id = BI_CD;
-			else if (ft_strncmp(name, "pwd", 4) == 0)
-				cmd->builtin_id = BI_PWD;
-			else if (ft_strncmp(name, "echo", 5) == 0)
-				cmd->builtin_id = BI_ECHO;
-			else if (ft_strncmp(name, "export", 7) == 0)
-				cmd->builtin_id = BI_EXPORT;
-			else if (ft_strncmp(name, "unset", 6) == 0)
-				cmd->builtin_id = BI_UNSET;
-			else if (ft_strncmp(name, "env", 4) == 0)
-				cmd->builtin_id = BI_ENV;
-			else if (ft_strncmp(name, "exit", 5) == 0)
-				cmd->builtin_id = BI_EXIT;
+			builtins_logic(cmd);
 		}
 		i++;
 	}
+}
+
+void	builtins_logic(t_cmd *cmd)
+{
+	char	*name;
+
+	name = cmd->argv_words[0]->segs->text;
+	if (ft_strncmp(name, "cd", 3) == 0)
+		cmd->builtin_id = BI_CD;
+	else if (ft_strncmp(name, "pwd", 4) == 0)
+		cmd->builtin_id = BI_PWD;
+	else if (ft_strncmp(name, "echo", 5) == 0)
+		cmd->builtin_id = BI_ECHO;
+	else if (ft_strncmp(name, "export", 7) == 0)
+		cmd->builtin_id = BI_EXPORT;
+	else if (ft_strncmp(name, "unset", 6) == 0)
+		cmd->builtin_id = BI_UNSET;
+	else if (ft_strncmp(name, "env", 4) == 0)
+		cmd->builtin_id = BI_ENV;
+	else if (ft_strncmp(name, "exit", 5) == 0)
+		cmd->builtin_id = BI_EXIT;
 }
