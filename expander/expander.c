@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:25:45 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/23 12:07:16 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:12:35 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	*expand_word(t_word *word, t_shell *shell)
 	result = ft_strdup("");
 	if (!word || !word->segs)
 		return (result);
-
 	tmp = word->segs;
 	while (tmp)
 	{

@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 13:25:26 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/23 14:14:37 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:16:08 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,29 @@ static int	is_overflow(unsigned long long res, int next_digit, int sign)
 	}
 	return (0);
 }
+
 static int	parse_atoll(const char *str, long long *out)
 {
-	unsigned long long	result = 0;
-	int					sign = 1;
-	int					i = 0;
+	unsigned long long	result;
+	int					sign;
+	int					i;
 
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)) i++;
+	result = 0;
+	sign = 1;
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-') sign = -1;
 		i++;
 	}
-	if (!str[i]) return (0);
+	if (!str[i])
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)) 
-			break;
+			break ;
 		if (str[i] < '0' || str[i] > '9')
 			return (0);
 		if (is_overflow(result, str[i] - '0', sign))
@@ -69,7 +75,8 @@ static int	parse_atoll(const char *str, long long *out)
 	}
 	while (str[i])
 	{
-		if (str[i] != ' ' && !(str[i] >= 9 && str[i] <= 13)) return (0);
+		if (str[i] != ' ' && !(str[i] >= 9 && str[i] <= 13))
+			return (0);
 		i++;
 	}
 	*out = (long long)result * sign;

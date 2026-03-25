@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 14:50:47 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 15:12:02 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/25 17:02:57 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,31 @@ t_cmd	*init_cmd(void)
 	return (cmd);
 }
 
+int	check_syntax(t_token *tokens)
+{
+	t_token	*tmp;
+
+	tmp = tokens;
+	if (tmp && tmp->type == TOK_PIPE)
+	{
+		ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+		return (0);
+	}
+	while (tmp)
+	{
+		if (tmp->type == TOK_PIPE)
+		{
+			if (!tmp->next || tmp->next->type == TOK_PIPE)
+			{
+				ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+				return (0);
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 void	identify_builtins(t_pipeline *p)
 {
 	int		i;
@@ -54,8 +79,7 @@ void	identify_builtins(t_pipeline *p)
 	while (i < p->count)
 	{
 		cmd = p->cmds[i];
-		// Predpokladáme, že BI_NONE je 0 (alebo si to nastav na svoju hodnotu)
-		cmd->builtin_id = 0; 
+		cmd->builtin_id = 0;
 		if (cmd->argc > 0 && cmd->argv_words && cmd->argv_words[0]->segs)
 		{
 			name = cmd->argv_words[0]->segs->text;

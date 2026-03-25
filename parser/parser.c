@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 15:19:38 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 15:18:06 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/25 16:09:36 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ t_pipeline	*parser(t_token *tokens)
 	int			cmd_count;
 
 	if (!tokens)
+		return (NULL);
+	if (!check_syntax(tokens))
 		return (NULL);
 	cmd_count = count_commands(tokens);
 	pipeline = init_pipeline(cmd_count);

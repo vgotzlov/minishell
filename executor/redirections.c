@@ -19,33 +19,6 @@ int	get_target(int type)
 	return (STDOUT_FILENO);
 }
 
-char	*word_to_pure_string(t_word *w)
-{
-	t_segment	*seg;
-	char		*res;
-	char		*tmp;
-
-	if (!w || !w->segs)
-		return (ft_strdup(""));
-	res = ft_strdup("");
-	if (!res)
-		return (NULL);
-	seg = w->segs;
-	while (seg)
-	{
-		if (seg->text)
-		{
-			tmp = res;
-			res = ft_strjoin(tmp, seg->text);
-			free(tmp);
-			if (!res)
-				return (NULL);
-		}
-		seg = seg->next;
-	}
-	return (res);
-}
-
 static int	apply_single_redir(t_redir *r, int target, t_shell *sh)
 {
 	int	fd;
@@ -55,7 +28,7 @@ static int	apply_single_redir(t_redir *r, int target, t_shell *sh)
 	else
 		fd = open_redir(r, sh);
 	if (fd == -1)
-		return (perror("open"), 1);
+		return (1);
 	if (dup2(fd, target) == -1)
 	{
 		if (fd > 2)

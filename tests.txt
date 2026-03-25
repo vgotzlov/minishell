@@ -2,54 +2,105 @@ valgrind --leak-check=full --track-origins=yes ./minishell
 
 cat test1 | grep a > test2 | echo a $USER >> test2 | cat test1 | grep b | >> test2 | echo b $USER >> test2 | cat test1 | grep c >> test2 | echo c $USER >> test2 | cat test1 | grep d >> test2 | echo d $USER | cat test1 | grep e >> test2 | echo e $USER >> test2
 
+// simple commands
 /bin/ls
 /bin/ls -a
+/bin/echo ahoj
+ls
+pwd
+spaces and tabs, empty command
+
+// arguments
+/bin/ls -l -a /tmp
+ls -la .
+echo hello world 42 minishell
+grep "main" main.c
+ls     -l
+echo a b c d
+cat Makefile
+
+// echo
 echo -n hi
+echo ahoj
+echo $USER
+echo "$USER"
+
+// exit
 exit 125
 exit hi
 exit 1 2 3
-
-/bin/ls b
-echo $?
+exit +123
+exit --123
+exit 256
+exit 257
 
 //Return value of a process
 bash
 exit 35
 expr $? + $?
+/bin/ls b
+echo $?
 
 //signals
+ctrl c
+ctrl \
+ctrl d
+cat -> pak stiskni Ctrl+C
+cat -> pak stiskni Ctrl+\
+
 stty sane (^M) for heredoc <<
 << stop cat
 
-
-//Test double quotes
-echo "cat lol.c   |   cat > lol.c"
+//double qoutes
+echo "ahoj   vsichni"
+echo "cat lol.c | cat > lol.c"
+echo "Ahoj | < > ;"
 echo "skhsk 9sus9u0s9snsjs jskjsksk"
+echo "$USER"
+echo '"$USER"'
+echo "'$USER'"
+echo "" ""
+cat ""
 
 //Test single quotes
 echo 'cat lol.c   |   cat > lol.c'
 echo 'echo $USER  |   cat > lol.c | echo * && echo "!!!"'
 echo '' hi '' 'hi'
 echo '$USER'
+echo ''
 
 //env
+env
 env | grep PWD
+env | grep MYVAR
 
 //export
+export TEST=42
+echo $TEST
 export ABC=123
 export BC=23
 export 4A=A4
 export AB1=11 AB2=22 AB3=33
 env | grep AB
 export
+export VAR1=1 VAR2=2 VAR3=3
+export VAR="ls -la"
+$VAR
+export EMPTY=
+echo "hello"$EMPTY"world"
+export ="value"
+
 
 //unset
+unset TEST
 unset 4A
 unset ABC
 unset
 env | grep BC
 unset AB1 AB3
 env | grep AB
+unset VAR1 VAR2 VAR3
+unset 123VAR
 
 //cd 
 /bin/ls
@@ -64,44 +115,56 @@ pwd
 
 //Relative Path
 ../../minishell
+../shell/minishell
+../../bin/ls
 
 //Environment path
 export PATH=~/42core/3_minishell/tluknew/.tests/bash/bdir:~/42core/3_minishell/tluknew/.tests/bash/cdir:~/aug_13/tests/bash/adir
 a.out
 
 //Redirection
+echo "hello" > file.txt
+cat < file.txt
+echo "prvni" > test
+echo "druhy" >> test
+ls > out1 > out2 > out3
+sort < file.txt > sorted.txt
+cat << EOF
 <, >, >> file exists
 <, >, >> file does not exist
 <, >, >> file no permissions
-
-//pipes
-cat file1 | grep a | wc -c
-
-
-//Go Crazy and history
-cat <<stop | grep k | wc -w
-
-//Environment variables
-echo $USER
-echo "$USER"
-
-
-
-//And, Or
-cat xs && (echo b || echo c)
-cat xs && echo b || echo c
-
-//wildcards
-
-echo m*
-echo *l
-echo *i*
-echo m*l
-
-// Surprise (or not)
-echo '"$USER"'
-
-//multiple Redirection
 << stop cat | grep kk >> test00 |echo bye<test00 >test00 grep bye
 << stop cat | grep kk >> test00 |echo bye | >test00 grep bye
 << stop cat | grep kk >> test00 |echo bye | |>test00 grep bye
+
+//pipes
+cat file1 | grep a | wc -c
+ls -l | grep ".c" | wc -l
+cat main.c | cat | cat | cat | cat | wc -l
+ls neexistuje | grep "ahoj" | wc -l
+cat < main.c | grep "int" > output.txt
+ls | | ls
+ls > out | cat out
+cat < non_existent_file | ls
+ls > /dev/full
+
+//Go Crazy and history
+cat <<stop | grep k | wc -w
+ls -l /usr/bin ctrlc
+sipky nahoru dolu
+dsbkdsgbksdghsd
+;;;;
+| | |
+cat | cat | ls
+long commmand
+
+
+//Environment variables
+echo $USER
+echo $
+echo "$USER"
+echo '$USER'
+unset USER
+echo "$USER"
+export USER=test_name
+echo "$USER"

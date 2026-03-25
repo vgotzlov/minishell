@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:25:38 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/23 12:15:15 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:13:51 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-char    **create_exec_argv(t_cmd *cmd, t_shell *shell)
+char	**create_exec_argv(t_cmd *cmd, t_shell *shell)
 {
-    char        **argv;
-    char        *expanded;
-    int         i;
-    int         j;
-    t_segment   *seg;
-    int         only_var;
+	char		**argv;
+	char		*expanded;
+	int			i;
+	int			j;
+	t_segment	*seg;
+	int			only_var;
 
 	if (!cmd || cmd->argc == 0)
 		return (NULL);
@@ -97,5 +97,4 @@ void	free_str_array(char **arr)
 	}
 	free(arr);
 }
-
 

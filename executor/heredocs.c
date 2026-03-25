@@ -29,6 +29,12 @@ static int	process_heredoc_line(t_redir *r, int fd)
 		return (1);
 	if (!line)
 		return (-1);
+	if (!r->delim_raw)
+	{
+		printf("CHYBA PARSERU: r->delim_raw je NULL!\n");
+		free(line);
+		return (-1);
+	}
 	if (ft_strncmp(line, r->delim_raw, ft_strlen(r->delim_raw) + 1) == 0)
 	{
 		free(line);
@@ -82,13 +88,13 @@ int	prepare_heredocs(t_shell *sh, t_pipeline *p)
 
 	if (!sh || !p)
 		return (1);
-	i = 0;
-	while (i < p->count)
+	i = -1;
+	while (++i < p->count)
 	{
 		if (!p->cmds[i])
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		r = p->cmds[i]->redirs;
 		while (r)
@@ -100,7 +106,6 @@ int	prepare_heredocs(t_shell *sh, t_pipeline *p)
 			}
 			r = r->next;
 		}
-		i++;
 	}
 	return (0);
 }

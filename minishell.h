@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/20 15:18:52 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/25 17:17:23 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,8 @@ char		*get_cmd_path(t_shell *sh, char *cmd);
 int			save_original_fd(int target, int *saved_in, int *saved_out);
 int			open_redir(t_redir *r, t_shell *sh);
 int			get_target(int type);
-char		*word_to_pure_string(t_word *w);
-int			apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out, t_shell *sh);
+int			apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out,
+			t_shell *sh);
 void		restore_redirs(int saved_in, int saved_out);
 
 // Signals
@@ -206,11 +206,6 @@ void		free_argv(char **argv);
 void		free_array(char **arr);
 void		free_pipeline(t_pipeline *p);
 
-// Global variable
-extern volatile sig_atomic_t	g_sig;
-
-void		skip_spaces(char *line, int *i);
-
 // lexer_words.c
 void		update_quote_state(char c, t_quote *state);
 int			is_delimiter(char c);
@@ -226,6 +221,7 @@ t_token		*lexer(char *line);
 t_token		*create_token(t_tok_type type, char *lexeme, t_quote quote_type);
 void		add_token_back(t_token **head, t_token *new_token);
 void		free_tokens(t_token *head);
+void		skip_spaces(char *line, int *i);
 
 // parser.c
 t_pipeline	*init_pipeline(int cmd_count);
@@ -246,6 +242,7 @@ void		add_redir_back(t_redir **head, t_redir *new_node);
 int			handle_redirection(t_cmd *cmd, t_token **current_token);
 
 // parser_utils.c
+int			check_syntax(t_token *tokens);
 int			count_commands(t_token *tokens);
 t_cmd		*init_cmd(void);
 void		identify_builtins(t_pipeline *p);

@@ -63,3 +63,70 @@ int	main(int argc, char **argv, char **envp)
 	rl_clear_history();
 	return (sh.last_status);
 }
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell		sh;
+	t_pipeline	*pipeline;
+	char		*line;
+	t_token		*tokens;
+
+	(void)argc;
+	(void)argv;
+	init_shell(&sh, envp);
+	while (1)
+	{
+		g_sig = 0;
+		if (isatty(STDIN_FILENO))
+			line = readline("minishell$ ");
+		else
+		{
+			ft_putstr_fd("minishell$ \n", 1); 
+			line = get_next_line(STDIN_FILENO);
+			if (line)
+			{
+				int len = ft_strlen(line);
+				if (len > 0 && line[len - 1] == '\n')
+					line[len - 1] = '\0';
+			}
+		}
+		if (g_sig == SIGINT)
+		{
+			sh.last_status = 130;
+			g_sig = 0;
+			if (line)
+				free(line);
+			continue ;
+		}
+		if (!line)
+		{
+			if (isatty(STDIN_FILENO))
+				ft_putendl_fd("exit", 1);
+			break;
+		}
+		if (*line == '\0')
+		{
+			free(line);
+			continue ;
+		}
+		if (isatty(STDIN_FILENO))
+			add_history(line);
+		tokens = lexer(line);			
+		if (tokens)
+		{
+			pipeline = parser(tokens);
+			if (pipeline)
+			{
+				execute_pipeline(&sh, pipeline);
+				free_pipeline(pipeline);
+			}
+			else
+				sh.last_status = 2;
+			free_tokens(tokens);
+		}
+		free(line);
+	}
+	free_shell(&sh);
+	if (isatty(STDIN_FILENO))
+		rl_clear_history();
+	return (sh.last_status);
+}

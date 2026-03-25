@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redirs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 09:22:54 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 10:45:15 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/25 15:57:09 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,16 @@ t_redir	*create_redir_node(t_redir_type type, char *target_lexeme)
 	if (!node)
 		return (NULL);
 	node->type = type;
-	node->target = create_word_node(target_lexeme);
-	node->delim_raw = NULL;
+	if (type == R_HEREDOC)
+	{
+		node->target = NULL;
+		node->delim_raw = ft_strdup(target_lexeme);
+	}
+	else
+	{
+		node->target = create_word_node(target_lexeme);
+		node->delim_raw = NULL;
+	}
 	node->delim_quoted = 0;
 	node->heredoc_fd = -1;
 	node->next = NULL;

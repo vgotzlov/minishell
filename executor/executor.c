@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 14:50:18 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/23 11:26:26 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 15:26:29 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ static int	exec_single_command(t_shell *sh, t_pipeline *p)
 	}
 	if (waitpid(pid, &status, 0) < 0)
 		return (perror("waitpid"), sh->last_status = 1, 1);
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			ft_putstr_fd("Quit (core dumped)\n", 1);
+		else if (WTERMSIG(status) == SIGINT)
+			ft_putstr_fd("\n", 1);
+	}
 	sh->last_status = wait_status_to_code(status);
 	return (sh->last_status);
 }
