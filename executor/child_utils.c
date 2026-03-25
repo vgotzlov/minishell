@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 11:13:20 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/23 11:35:50 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:35:57 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,25 @@ void	exec_and_free(t_shell *sh, t_pipeline *p, char *path, char **argv)
 	_exit(126);
 }
 
+static char	handle_path_not_found(t_shell *sh, t_pipeline *p, char **argv)
+{
+	if (ft_strchr(argv[0], '/'))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(argv[0], 2);
+		ft_putendl_fd(": No such file or directory", 2);
+	}
+	else
+	{
+		ft_putstr_fd(argv[0], 2);
+		ft_putendl_fd(": command not found", 2);
+	}
+	free_str_array(argv);
+	free_pipeline(p);
+	free_shell(sh);
+	_exit(127);
+}
+
 char	*get_child_path(t_shell *sh, t_pipeline *p, char **argv)
 {
 	char		*path;
@@ -80,22 +99,6 @@ char	*get_child_path(t_shell *sh, t_pipeline *p, char **argv)
 	}
 	path = get_cmd_path(sh, argv[0]);
 	if (!path)
-	{
-		if (ft_strchr(argv[0], '/'))
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(argv[0], 2);
-			ft_putendl_fd(": No such file or directory", 2);
-		}
-		else
-		{
-			ft_putstr_fd(argv[0], 2);
-			ft_putendl_fd(": command not found", 2);
-		}
-		free_str_array(argv);
-		free_pipeline(p);
-		free_shell(sh);
-		_exit(127);
-	}
+		handle_path_not_found(sh, p, argv);
 	return (path);
 }

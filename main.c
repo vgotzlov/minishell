@@ -21,12 +21,56 @@ static void	init_shell(t_shell *sh, char **envp)
 	sh->last_status = 0;
 }
 
+static int	check_input(t_shell *sh, char *line)
+{
+	if (g_sig == SIGINT)
+	{
+		sh->last_status = 130;
+		g_sig = 0;
+		if (line)
+			free(line);
+		return (1);
+	}
+	if (!line)
+	{
+		if (isatty(STDIN_FILENO))
+			ft_putendl_fd("exit", 1);
+		return (2);
+	}
+	if (*line == '\0')
+	{
+		free(line);
+		return (1);
+	}
+	return (0);
+}
+
+static void	process_line(t_shell *sh, char *line)
+{
+	t_token		*tokens;
+	t_pipeline	*pipeline;
+
+	add_history(line);
+	tokens = lexer(line);
+	if (tokens)
+	{
+		pipeline = parser(tokens);
+		if (pipeline)
+		{
+			execute_pipeline(sh, pipeline);
+			free_pipeline(pipeline);
+		}
+		else
+			sh->last_status = 2;
+		free_tokens(tokens);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell		sh;
-	t_pipeline	*pipeline;
 	char		*line;
-	t_token		*tokens;
+	int			status;
 
 	(void)argc;
 	(void)argv;
@@ -36,39 +80,12 @@ int	main(int argc, char **argv, char **envp)
 		setup_interactive_signals();
 		g_sig = 0;
 		line = readline("minishell$ ");
-		if (g_sig == SIGINT)
-		{
-			sh.last_status = 130;
-			g_sig = 0;
-			if (line)
-				free(line);
+		status = check_input(&sh, line);
+		if (status == 2)
+			break ;
+		if (status == 1)
 			continue ;
-		}
-		if (!line)
-		{
-			if (isatty(STDIN_FILENO))
-				ft_putendl_fd("exit", 1);
-			break;
-		}
-		if (*line == '\0')
-		{
-			free(line);
-			continue ;
-		}
-		add_history(line);
-		tokens = lexer(line);			
-		if (tokens)
-		{
-			pipeline = parser(tokens);
-			if (pipeline)
-			{
-				execute_pipeline(&sh, pipeline);
-				free_pipeline(pipeline);
-			}
-			else
-				sh.last_status = 2;
-			free_tokens(tokens);
-		}
+		process_line(&sh, line);
 		free(line);
 	}
 	free_shell(&sh);
