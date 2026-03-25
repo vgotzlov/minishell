@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 17:11:36 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/25 17:58:12 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/25 18:08:48 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ static int	handle_word(char *line, int *i, t_token **head)
 	add_token_back(head, create_token(TOK_WORD, w_str, q));
 	*i += w_len;
 	return (0);
+}
+
+static void	skip_spaces(char *line, int *i)
+{
+	while (line[*i] == ' ' || line[*i] == '\t')
+		(*i)++;
 }
 
 t_token	*lexer(char *line)

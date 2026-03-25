@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/25 17:52:01 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/25 18:09:08 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,6 @@ t_token		*lexer(char *line);
 t_token		*create_token(t_tok_type type, char *lexeme, t_quote quote_type);
 void		add_token_back(t_token **head, t_token *new_token);
 void		free_tokens(t_token *head);
-void		skip_spaces(char *line, int *i);
 
 // parser.c
 t_pipeline	*init_pipeline(int cmd_count);
