@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 13:25:26 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/25 17:16:08 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/03/25 17:34:50 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,24 @@ static int	is_overflow(unsigned long long res, int next_digit, int sign)
 	return (0);
 }
 
+static int	parse_n(const char *str, int *i, int sign, unsigned long long *res)
+{
+	if (!str[*i])
+		return (0);
+	while (str[*i])
+	{
+		if (str[*i] == ' ' || (str[*i] >= 9 && str[*i] <= 13))
+			break ;
+		if (str[*i] < '0' || str[*i] > '9')
+			return (0);
+		if (is_overflow(*res, str[*i] - '0', sign))
+			return (0);
+		*res = (*res * 10) + (str[*i] - '0');
+		(*i)++;
+	}
+	return (1);
+}
+
 static int	parse_atoll(const char *str, long long *out)
 {
 	unsigned long long	result;
@@ -57,22 +75,12 @@ static int	parse_atoll(const char *str, long long *out)
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
-		if (str[i] == '-') sign = -1;
+		if (str[i] == '-')
+			sign = -1;
 		i++;
 	}
-	if (!str[i])
+	if (!parse_n(str, &i, sign, &result))
 		return (0);
-	while (str[i])
-	{
-		if (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)) 
-			break ;
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		if (is_overflow(result, str[i] - '0', sign))
-			return (0);
-		result = (result * 10) + (str[i] - '0');
-		i++;
-	}
 	while (str[i])
 	{
 		if (str[i] != ' ' && !(str[i] >= 9 && str[i] <= 13))
@@ -82,6 +90,7 @@ static int	parse_atoll(const char *str, long long *out)
 	*out = (long long)result * sign;
 	return (1);
 }
+
 int	builtin_exit(t_shell *sh, char **argv)
 {
 	long long	status;

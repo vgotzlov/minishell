@@ -6,7 +6,7 @@
 /*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:26:32 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/25 17:32:16 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/03/25 17:50:10 by vgotzlov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ int			save_original_fd(int target, int *saved_in, int *saved_out);
 int			open_redir(t_redir *r, t_shell *sh);
 int			get_target(int type);
 int			apply_redirs(t_cmd *cmd, int *saved_in, int *saved_out,
-			t_shell *sh);
+				t_shell *sh);
 void		restore_redirs(int saved_in, int saved_out);
 
 // Signals
