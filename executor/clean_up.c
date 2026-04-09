@@ -6,12 +6,11 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 12:15:37 by msnizek           #+#    #+#             */
-/*   Updated: 2026/04/08 23:51:49 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/09 14:19:38 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 
 void	free_env_list(t_env *env)
 {
