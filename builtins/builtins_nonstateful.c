@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 13:17:13 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/12 17:00:11 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/08 23:48:04 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	builtin_pwd(char **argv)
 	return (0);
 }
 
+// n flag -> echo without \n
 static int	is_n_flag(char *arg)
 {
 	int	i;

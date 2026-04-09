@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 09:22:54 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/25 15:57:09 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:13 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_redir_type	get_redir_type(t_tok_type tok_type)
 	return (R_HEREDOC);
 }
 
-// Vytvoří a zinicializuje nový node t_redir.
+// Vytvoří a zinicializuje nový node t_redir (>, >>, <, <<).
 t_redir	*create_redir_node(t_redir_type type, char *target_lexeme)
 {
 	t_redir	*node;

@@ -6,7 +6,7 @@
 #    By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/12 16:31:20 by msnizek           #+#    #+#              #
-#    Updated: 2026/03/23 12:38:07 by msnizek          ###   ########.fr        #
+#    Updated: 2026/04/08 23:48:12 by msnizek          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ CFLAGS	= -Wall -Wextra -Werror -I.
 LDFLAGS	= -Llibft -lft -lreadline
 
 SRC			=	lexer/lexer_operators.c \
-				lexer/lexer_utils.c \
 				lexer/lexer_words.c \
 				lexer/lexer.c \
 				lexer/token_utils.c \
@@ -48,7 +47,6 @@ SRC			=	lexer/lexer_operators.c \
 				builtins/builtin_export.c \
 				builtins/builtin_unset.c \
 				builtins/builtins_nonstateful.c \
-				builtins/builtin_dispatch_utils.c \
 				builtins/builtin_dispatch.c \
 				main.c \
 

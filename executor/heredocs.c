@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+// ctrl+c while writing hd
 static void	handle_sigint_heredoc(int sig)
 {
 	(void)sig;
@@ -30,16 +31,9 @@ static int	process_heredoc_line(t_redir *r, int fd)
 	if (!line)
 		return (-1);
 	if (!r->delim_raw)
-	{
-		printf("CHYBA PARSERU: r->delim_raw je NULL!\n");
-		free(line);
-		return (-1);
-	}
+		return (free(line), -1);
 	if (ft_strncmp(line, r->delim_raw, ft_strlen(r->delim_raw) + 1) == 0)
-	{
-		free(line);
-		return (-1);
-	}
+		return (free(line), -1);
 	ft_putendl_fd(line, fd);
 	free(line);
 	return (0);
@@ -65,6 +59,7 @@ static int	hd_read_loop(t_redir *r, int fd)
 	return (0);
 }
 
+// creates pipe in which the text will be saved
 static int	handle_single_heredoc(t_shell *sh, t_redir *r)
 {
 	int		fd[2];
@@ -92,10 +87,7 @@ int	prepare_heredocs(t_shell *sh, t_pipeline *p)
 	while (++i < p->count)
 	{
 		if (!p->cmds[i])
-		{
-			i++;
 			continue ;
-		}
 		r = p->cmds[i]->redirs;
 		while (r)
 		{

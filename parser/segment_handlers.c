@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segment_handlers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 09:33:23 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 10:46:57 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:40 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ void	handle_dollar(char *str, int *i, t_quote state, t_segment **head)
 		add_segment_back(head, create_segment(SEG_VAR, text, state));
 	}
 	else
-	{
 		add_segment_back(head, create_segment(SEG_LIT, ft_strdup("$"), state));
-	}
 }
 
 void	handle_literal(char *str, int *i, t_quote state, t_segment **head)

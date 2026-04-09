@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_words.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 17:10:40 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/06 14:01:05 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:46 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// stav uvozovek
-
+// in which quotes are you
 void	update_quote_state(char c, t_quote *state)
 {
 	if (c == '\'' && *state == Q_NONE)

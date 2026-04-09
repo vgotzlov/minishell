@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 17:53:18 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/20 09:27:44 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:16 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// handle redirections and words, one command
 void	fill_cmd(t_cmd *cmd, t_token **tokens)
 {
 	int		i;

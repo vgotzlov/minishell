@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+// conection of the pipes
 static void	manage_pipe_fds(int prev_fd, int pipe_fds[2], int i, int count)
 {
 	if (prev_fd != -1)
@@ -27,6 +28,7 @@ static void	manage_pipe_fds(int prev_fd, int pipe_fds[2], int i, int count)
 	}
 }
 
+// prepare the pipe for the next command in the sequence
 static int	move_pipe_fd(int pipe_fds[2], int i, int count)
 {
 	if (i < count - 1)

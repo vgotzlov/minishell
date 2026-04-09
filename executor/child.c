@@ -45,7 +45,6 @@ static int	child_run_builtin(t_shell *sh, t_pipeline *p, t_cmd *cmd)
 
 	if (child_apply_redirs(cmd, sh) != 0)
 	{
-		perror("redirections");
 		free_pipeline(p);
 		free_shell(sh);
 		_exit(1);

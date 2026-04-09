@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+// search for extern commands (ls, cat, ...)
 static char	*search_in_paths(char **paths, char *cmd)
 {
 	char	*tmp;

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 16:49:47 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/20 14:26:21 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:23 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// duplicates fd
 int	save_original_fd(int target, int *saved_in, int *saved_out)
 {
 	if (target == STDIN_FILENO)
@@ -53,6 +54,11 @@ int	open_redir(t_redir *r, t_shell *sh)
 		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (r->type == R_APP)
 		fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(path);
+	}
 	free(path);
 	return (fd);
 }

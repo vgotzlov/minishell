@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 16:37:30 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/18 16:43:32 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/08 23:48:01 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,6 @@ t_env	*init_env_list(char **envp)
 	return (sh.env);
 }
 
-const char	*env_get(const t_env *env, const char *key)
-{
-	while (env)
-	{
-		if (env->key && key
-			&& ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0)
-		{
-			if (env->val)
-				return (env->val);
-			return ("");
-		}
-		env = env->next;
-	}
-	return (NULL);
-}
-
 static int	env_list_size(t_env *env)
 {
 	int	size;
@@ -64,6 +48,7 @@ static int	env_list_size(t_env *env)
 	return (size);
 }
 
+// linked list to array, because of execve
 char	**env_to_array(t_env *env)
 {
 	char	**envp;

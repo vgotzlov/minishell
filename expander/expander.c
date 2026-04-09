@@ -6,13 +6,13 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:25:45 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/25 17:12:35 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:38 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Převede jeden segment na string (vždy alokuje novou paměť).
+// Převede jeden segment do finalni podoby (vždy alokuje novou paměť).
 char	*get_segment_str(t_segment *seg, t_shell *shell)
 {
 	char	*val;

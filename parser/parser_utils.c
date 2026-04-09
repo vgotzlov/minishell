@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 14:50:47 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/25 17:30:20 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:10 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// command is separated by |
 int	count_commands(t_token *tokens)
 {
 	int		count;
@@ -44,6 +45,7 @@ t_cmd	*init_cmd(void)
 	return (cmd);
 }
 
+// check pipes
 int	check_syntax(t_token *tokens)
 {
 	t_token	*tmp;
@@ -70,24 +72,6 @@ int	check_syntax(t_token *tokens)
 	return (1);
 }
 
-void	identify_builtins(t_pipeline *p)
-{
-	int		i;
-	t_cmd	*cmd;
-
-	i = 0;
-	while (i < p->count)
-	{
-		cmd = p->cmds[i];
-		cmd->builtin_id = 0;
-		if (cmd->argc > 0 && cmd->argv_words && cmd->argv_words[0]->segs)
-		{
-			builtins_logic(cmd);
-		}
-		i++;
-	}
-}
-
 void	builtins_logic(t_cmd *cmd)
 {
 	char	*name;
@@ -107,4 +91,20 @@ void	builtins_logic(t_cmd *cmd)
 		cmd->builtin_id = BI_ENV;
 	else if (ft_strncmp(name, "exit", 5) == 0)
 		cmd->builtin_id = BI_EXIT;
+}
+
+void	identify_builtins(t_pipeline *p)
+{
+	int		i;
+	t_cmd	*cmd;
+
+	i = 0;
+	while (i < p->count)
+	{
+		cmd = p->cmds[i];
+		cmd->builtin_id = 0;
+		if (cmd->argc > 0 && cmd->argv_words && cmd->argv_words[0]->segs)
+			builtins_logic(cmd);
+		i++;
+	}
 }

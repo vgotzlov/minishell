@@ -6,12 +6,13 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 11:13:20 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/25 17:35:57 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:26 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// is path exists? Is it file?
 static void	check_path(char *path, char **argv, t_shell *sh, t_pipeline *p)
 {
 	struct stat	path_stat;
@@ -37,6 +38,7 @@ static void	check_path(char *path, char **argv, t_shell *sh, t_pipeline *p)
 	}
 }
 
+// runs the new program in child process
 void	exec_and_free(t_shell *sh, t_pipeline *p, char *path, char **argv)
 {
 	char		**envp;
@@ -80,6 +82,7 @@ static char	handle_path_not_found(t_shell *sh, t_pipeline *p, char **argv)
 	_exit(127);
 }
 
+// get path in child process, handle permissions
 char	*get_child_path(t_shell *sh, t_pipeline *p, char **argv)
 {
 	char		*path;

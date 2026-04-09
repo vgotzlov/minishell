@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vgotzlov <vgotzlov@student.42prague.com    +#+  +:+       +#+        */
+/*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:25:38 by vgotzlov          #+#    #+#             */
-/*   Updated: 2026/03/25 17:48:52 by vgotzlov         ###   ########.fr       */
+/*   Updated: 2026/04/08 23:51:38 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// search for key word like $USER
 //hleda env v t_env
 char	*get_env_value(t_env *env_list, char *key)
 {
@@ -83,19 +84,4 @@ char	**create_exec_argv(t_cmd *cmd, t_shell *shell)
 	}
 	argv[j] = NULL;
 	return (argv);
-}
-
-void	free_str_array(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
 }

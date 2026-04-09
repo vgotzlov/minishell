@@ -6,13 +6,12 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 14:50:18 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/25 15:26:29 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/09 12:51:56 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// convert return value from wait() to "shell" return value
 // how process ends?
 int	wait_status_to_code(int status)
 {
@@ -23,9 +22,7 @@ int	wait_status_to_code(int status)
 	return (1);
 }
 
-// run the builtin command in parent process
-// redirects stdin/stdout according to redirections
-// and returns everything to its original state after 
+// run the builtins command in parent process
 static int	exec_parent_builtin(t_shell *sh, t_cmd *cmd)
 {
 	int		saved_in;
@@ -45,7 +42,7 @@ static int	exec_parent_builtin(t_shell *sh, t_cmd *cmd)
 	return (rc);
 }
 
-// create child, in child run the command, parent -> wait
+// create child, in child run the command, commands without pipes
 static int	exec_single_command(t_shell *sh, t_pipeline *p)
 {
 	pid_t	pid;

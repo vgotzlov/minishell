@@ -6,12 +6,13 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 13:35:26 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/18 16:56:22 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:56 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// bubble sort
 static void	sort_env_array(t_env **arr, int size)
 {
 	int		i;
@@ -86,6 +87,7 @@ static int	print_exported_env(t_env *env)
 	return (0);
 }
 
+// separate key and value
 static void	process_export_arg(t_shell *sh, char *arg)
 {
 	char	*eq;

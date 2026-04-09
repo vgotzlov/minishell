@@ -6,7 +6,7 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 12:15:37 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/19 23:17:24 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/08 23:51:49 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,21 @@ void	free_array(char **arr)
 
 	i = 0;
 	while (arr && arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+void	free_str_array(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
 	{
 		free(arr[i]);
 		i++;

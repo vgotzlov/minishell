@@ -6,11 +6,27 @@
 /*   By: msnizek <msnizek@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:30:25 by msnizek           #+#    #+#             */
-/*   Updated: 2026/03/14 00:14:08 by msnizek          ###   ########.fr       */
+/*   Updated: 2026/04/08 23:47:58 by msnizek          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+const char	*env_get(const t_env *env, const char *key)
+{
+	while (env)
+	{
+		if (env->key && key
+			&& ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0)
+		{
+			if (env->val)
+				return (env->val);
+			return ("");
+		}
+		env = env->next;
+	}
+	return (NULL);
+}
 
 static const char	*get_cd_path(t_shell *sh, char **argv)
 {
